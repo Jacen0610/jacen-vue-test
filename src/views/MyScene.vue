@@ -55,7 +55,7 @@ export default {
             },function (xhr) {
             console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
             },
-          function (error) {
+          function () {
             console.log('Error Occurred');
       });
 
