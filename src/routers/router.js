@@ -1,4 +1,4 @@
-import Vue from 'vue'
+
 import {createRouter,createWebHashHistory} from 'vue-router'
 import Home from '../views/Home.vue'
 import MyScene from '../views/MyScene.vue'
