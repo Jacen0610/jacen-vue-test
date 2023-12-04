@@ -16,14 +16,6 @@
 </template>
 
 <script>
-import {
-  Check,
-  Delete,
-  Edit,
-  Message,
-  Search,
-  Star,
-} from '@element-plus/icons-vue'
 export default {
   name: 'Home'
 }
@@ -31,11 +23,6 @@ export default {
 
 <style scoped>
 
-  .rounded-btn {
-    border-radius: 10px;
-    padding: 15px;
-    font-size: 18px;
-  }
 
   .real-center-container {
     display: flex;
