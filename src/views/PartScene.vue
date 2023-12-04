@@ -49,7 +49,10 @@ export default {
       const axesHelper = new THREE.AxesHelper(5);
       this.scene.add(axesHelper);
 
-
+      const capGeo = new THREE.CapsuleGeometry( 1, 1, 4, 8 );
+      const capMat = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+      const myCapsule = new THREE.Mesh( capGeo, capMat );
+      this.scene.add(myCapsule);
 
       // 添加 OrbitControls 控制器
       this.controls = new OrbitControls(this.camera, this.renderer.domElement);
