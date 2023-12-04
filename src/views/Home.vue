@@ -1,13 +1,14 @@
 <template>
   <div class="real-center-container">
     <div class="large-text" >This is Home Page</div>
-    <h1 style="color: #42b983">Welcome, Jacen</h1>
+    <h1 style="color: #42b983">Welcome to Jacen's Vue test Project</h1>
+    <h2 style="color: cadetblue">Most power by Three.js</h2>
     <div>
       <router-link class="btn-container" to="/myScene">
-        <button class="rounded-btn">Go to MyScene</button>
+        <el-button size="large" type="warning" round>Go to MyScene</el-button>
       </router-link>
       <router-link class="btn-container" to="/partScene">
-        <button class="rounded-btn">Go to PartScene</button>
+        <el-button size="large" type="success" round>Go to TestScene</el-button>
       </router-link>
     </div>
 
@@ -15,12 +16,21 @@
 </template>
 
 <script>
+import {
+  Check,
+  Delete,
+  Edit,
+  Message,
+  Search,
+  Star,
+} from '@element-plus/icons-vue'
 export default {
   name: 'Home'
 }
 </script>
 
 <style scoped>
+
   .rounded-btn {
     border-radius: 10px;
     padding: 15px;
