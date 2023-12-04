@@ -8,6 +8,7 @@
 <script>
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import {toRaw} from "vue";
 
 export default {
   name: 'PartScene',
@@ -48,11 +49,7 @@ export default {
       const axesHelper = new THREE.AxesHelper(5);
       this.scene.add(axesHelper);
 
-      // 创建立方体
-      const geometry = new THREE.BoxGeometry();
-      const material = new THREE.MeshBasicMaterial({ color: 0x888888 });// 使用RGB表示灰色，这里的值为0x888888
-      this.cube = new THREE.Mesh(geometry, material);
-      this.scene.add(this.cube);
+
 
       // 添加 OrbitControls 控制器
       this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -63,14 +60,13 @@ export default {
         requestAnimationFrame(animate);
 
         // 使立方体旋转
-        this.cube.rotation.x += 0.01;
-        this.cube.rotation.y += 0.01;
+
 
         // 更新 OrbitControls
         this.controls.update();
 
         // 渲染场景
-        this.renderer.render(this.scene, this.camera);
+        this.renderer.render(toRaw(this.scene), this.camera);
       }
 
       animate();
