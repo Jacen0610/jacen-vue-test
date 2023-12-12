@@ -1,7 +1,9 @@
 <template>
   <div>
     <h1 style="color: green; text-align: center;">This is Scene</h1>
+    <button @click="initPose">Init Pose</button>
     <div ref="scene"></div>
+
   </div>
 </template>
 
@@ -24,8 +26,52 @@ export default {
       // 创建相机
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
       camera.position.z = 50;
+      camera.lookAt(new THREE.Vector3(0,0,0));
 
+      //创建平面
+      const planeGeometry = new THREE.PlaneGeometry(300, 300);
+      const planeMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
+      const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+      scene.add(plane);
 
+      //监听鼠标点击事件
+      window.addEventListener('click', onClick, false);
+
+      const mouse = new THREE.Vector2();
+      let firstClick = null;
+      const raycaster = new THREE.Raycaster();
+      function onClick(event) {
+        const rect = event.target.getBoundingClientRect();
+        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        // 设置Raycaster的起点和方向
+        raycaster.setFromCamera(mouse, camera);
+
+        // 获取射线与平面的交点
+        const intersects = raycaster.intersectObject(plane);
+
+        if (intersects.length > 0) {
+          const clickPoint = intersects[0].point;
+
+          if (!firstClick) {
+            // 第一次点击
+            firstClick = clickPoint.clone();
+            console.log('First Click Point:', firstClick);
+          } else {
+            // 第二次点击
+            const secondClick = clickPoint.clone();
+            console.log('Second Click Point:', secondClick);
+
+            // 计算第一个点到第二个点的方向
+            const direction = new THREE.Vector3().subVectors(secondClick, firstClick).normalize();
+            console.log('Direction:', direction);
+
+            // 重置第一次点击
+            firstClick = null;
+          }
+        }
+      }
 
       // 创建渲染器
       const renderer = new THREE.WebGLRenderer()
@@ -74,6 +120,9 @@ export default {
       }
 
       animate()
+    },
+    initPose() {
+
     }
   }
 }
