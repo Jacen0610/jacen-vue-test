@@ -3,7 +3,6 @@ import Home from '../views/Home.vue'
 import MyScene from '../views/MyScene.vue'
 import PartScene from "../views/PartScene.vue";
 
-
 const routes = [
     {
         path: '/',
