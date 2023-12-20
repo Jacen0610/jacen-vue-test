@@ -66,8 +66,8 @@ export default {
       this.scene.add(axesHelper);
 
       //创建平面
-      const planeGeometry = new THREE.PlaneGeometry(300, 300);
-      const planeMaterial = new THREE.MeshBasicMaterial({ color: 0x404040, side: THREE.DoubleSide });
+      const planeGeometry = new THREE.PlaneGeometry(500, 500);
+      const planeMaterial = new THREE.MeshBasicMaterial({ color: 0x808080, side: THREE.DoubleSide ,transparent: true, opacity: 0});
       this.plane = new THREE.Mesh(planeGeometry, planeMaterial);
       this.scene.add(this.plane);
 

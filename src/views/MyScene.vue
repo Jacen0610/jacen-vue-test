@@ -34,44 +34,18 @@ export default {
       const plane = new THREE.Mesh(planeGeometry, planeMaterial);
       scene.add(plane);
 
-      //监听鼠标点击事件
-      window.addEventListener('click', onClick, false);
-
-      const mouse = new THREE.Vector2();
-      let firstClick = null;
-      const raycaster = new THREE.Raycaster();
-      function onClick(event) {
-        const rect = event.target.getBoundingClientRect();
-        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-        // 设置Raycaster的起点和方向
-        raycaster.setFromCamera(mouse, camera);
-
-        // 获取射线与平面的交点
-        const intersects = raycaster.intersectObject(plane);
-
-        if (intersects.length > 0) {
-          const clickPoint = intersects[0].point;
-
-          if (!firstClick) {
-            // 第一次点击
-            firstClick = clickPoint.clone();
-            console.log('First Click Point:', firstClick);
-          } else {
-            // 第二次点击
-            const secondClick = clickPoint.clone();
-            console.log('Second Click Point:', secondClick);
-
-            // 计算第一个点到第二个点的方向
-            const direction = new THREE.Vector3().subVectors(secondClick, firstClick).normalize();
-            console.log('Direction:', direction);
-
-            // 重置第一次点击
-            firstClick = null;
-          }
-        }
-      }
+      // 三维样条曲线
+      const path = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(5, 0, 0),
+        new THREE.Vector3(10, 0.1, 0),
+        new THREE.Vector3(15, 0.2, 0),
+        new THREE.Vector3(20, 1, 0),
+        new THREE.Vector3(25, 2, 0)
+      ]);
+      const tubeGeometry = new THREE.TubeGeometry( path, 20, 0.25, 8, false );
+      const tubeMaterial = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+      const tube = new THREE.Mesh(tubeGeometry,tubeMaterial);
+      scene.add(tube);
 
       // 创建渲染器
       const renderer = new THREE.WebGLRenderer()
