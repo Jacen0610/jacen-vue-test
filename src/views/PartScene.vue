@@ -2,7 +2,7 @@
   <div>
     <h1 style="color: green; text-align: center;">This is PartScene</h1>
     <button class="rounded-btn" @click="initPoseButton">Init Pose</button>
-    <div ref="scene"></div>
+    <div ref="myScene"></div>
   </div>
 </template>
 
@@ -23,6 +23,7 @@ export default {
       cube: null,
       controls: null,
       plane: null,
+      arrow: null,
 
       //initPose的变量
       firstClickFlag: false,
@@ -59,7 +60,7 @@ export default {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
 
       // 将渲染器添加到DOM中
-      this.$refs.scene.appendChild(this.renderer.domElement);
+      this.$refs.myScene.appendChild(this.renderer.domElement);
 
       // 添加坐标轴辅助线
       const axesHelper = new THREE.AxesHelper(5);
@@ -138,38 +139,16 @@ export default {
       const intersects = raycaster.intersectObject(this.plane);
 
       if (intersects.length > 0) {
-        const clickPoint = intersects[0].point;
+        // 创建箭头
+        const arrowGeometry = new THREE.ConeGeometry(0.2, 1, 8);
+        const arrowMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        this.arrow = new THREE.Mesh(arrowGeometry, arrowMaterial);
 
-        if (!this.firstClickFlag) {
-          // 第一次点击
-          this.firstPoint = clickPoint.clone();
-          console.log('First Click Point:', this.firstPoint);
-          this.firstClickFlag = true;
+        // 设置箭头位置为点击的点
+        this.arrow.position.copy(intersects[0].point);
 
-          //添加第一次点击可视化位置
-          const firstPosMarkerGeo = new THREE.CircleGeometry(0.5,32);
-          const firstPosMarkerMat = new THREE.MeshBasicMaterial({color: 0x00ff00});
-          this.firstPointMarker = new THREE.Mesh(firstPosMarkerGeo,firstPosMarkerMat);
-          this.firstPointMarker.position.set(this.firstPoint.x, this.firstPoint.y, 0);
-          this.scene.add(this.firstPointMarker);
-        } else {
-          // 第二次点击
-          this.secondPoint = clickPoint.clone();
-          console.log('Second Click Point:', this.secondPoint);
-
-          // 计算第一个点到第二个点的方向
-          const direction = new THREE.Vector3().subVectors(this.secondPoint, this.firstPoint).normalize();
-          console.log('Direction:', direction);
-
-          // 重置第一次点击
-          this.firstClickFlag = false;
-          this.initPoseFlag = false;
-
-          //移除第一个点的标记
-          this.scene.remove(this.firstPointMarker);
-          this.firstPointMarker = null;
-          window.removeEventListener('click',this.poseCalculation);
-        }
+        // 添加箭头到场景
+        scene.add(this.arrow);
       }
     },
 

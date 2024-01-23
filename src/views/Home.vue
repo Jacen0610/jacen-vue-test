@@ -9,6 +9,9 @@
       <router-link class="btn-container" to="/partScene">
         <button class="rounded-btn">Go to PartScene</button>
       </router-link>
+      <router-link class="btn-container" to="/mouseScene">
+        <button class="rounded-btn">Go to MouseScene</button>
+      </router-link>
     </div>
 
   </div>
