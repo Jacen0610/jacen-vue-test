@@ -18,6 +18,12 @@ export default {
       arrowHelper: null,
       plane: null,
       isCreatingArrow: false,
+      arrowOrigin: null,
+      arrowDirection: new THREE.Vector3(),
+      mouseMoveEventListener: null,
+      clickEventListenerA: null,
+      clickEventListenerC: null,
+      clickTimeout: null,
     };
   },
   mounted() {
@@ -38,7 +44,7 @@ export default {
       this.renderer = new THREE.WebGLRenderer();
       this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-      // 添加渲染器到DOM
+      // 添加渲染器到 DOM
       this.$refs.canvasContainer.innerHTML = '';
       this.$refs.canvasContainer.appendChild(this.renderer.domElement);
 
@@ -59,22 +65,42 @@ export default {
 
         // 清除箭头
         this.removeArrow();
+
+        // 停止监听 click 事件和 mousemove 事件
+        if (this.clickEventListenerA) {
+          window.removeEventListener('click', this.clickEventListenerA);
+          this.clickEventListenerA = null;
+        }
+        if (this.mouseMoveEventListener) {
+          window.removeEventListener('mousemove', this.mouseMoveEventListener);
+          this.mouseMoveEventListener = null;
+        }
+        if (this.clickEventListenerC) {
+          window.removeEventListener('click', this.clickEventListenerC);
+          this.clickEventListenerC = null;
+        }
+        if (this.clickTimeout) {
+          clearTimeout(this.clickTimeout);
+          this.clickTimeout = null;
+        }
       } else {
         // 开始创建箭头
         this.isCreatingArrow = true;
 
-        // 等待200ms后开始监听鼠标点击事件
+        // 等待200ms后开始监听鼠标点击事件A
         setTimeout(() => {
-          window.addEventListener('click', this.onClick);
+          this.clickEventListenerA = this.onClickA;
+          window.addEventListener('click', this.clickEventListenerA);
         }, 200);
       }
     },
-    onClick(event) {
+    onClickA(event) {
       if (this.isCreatingArrow) {
-        // 清除之前的箭头
-        this.removeArrow();
+        // 结束监听鼠标点击事件A
+        window.removeEventListener('click', this.clickEventListenerA);
+        this.clickEventListenerA = null;
 
-        // 计算鼠标与平面的交点作为arrowhelper的origin
+        // 计算鼠标与平面的交点作为箭头的起点
         const mouse = new THREE.Vector2();
         const canvasRect = this.$refs.canvasContainer.getBoundingClientRect();
         mouse.x = ((event.clientX - canvasRect.left) / canvasRect.width) * 2 - 1;
@@ -85,21 +111,25 @@ export default {
         const intersects = raycaster.intersectObject(this.plane);
 
         if (intersects.length > 0) {
-          const origin = intersects[0].point;
-          const direction = new THREE.Vector3(1, 0, 0); // 初始方向，你可以根据实际需求更改
+          this.arrowOrigin = intersects[0].point;
 
-          // 创建ArrowHelper
-          this.arrowHelper = new THREE.ArrowHelper(direction, origin, 3, 0x00ff00);
+          // 创建 ArrowHelper
+          this.arrowHelper = new THREE.ArrowHelper(this.arrowDirection, this.arrowOrigin, 3, 0x00ff00);
           this.scene.add(this.arrowHelper);
 
-          // 开始监听鼠标实时移动的位置与平面的交点
-          window.addEventListener('mousemove', this.onMouseMove);
+          // 开始监听鼠标移动事件B
+          this.mouseMoveEventListener = this.onMouseMoveB;
+          window.addEventListener('mousemove', this.mouseMoveEventListener);
+
+          // 开始监听鼠标点击事件C
+          this.clickEventListenerC = this.onClickC;
+          window.addEventListener('click', this.clickEventListenerC);
         }
       }
     },
-    onMouseMove(event) {
+    onMouseMoveB(event) {
       if (this.isCreatingArrow && this.arrowHelper) {
-        // 计算实时更新arrowhelper
+        // 计算实时更新 ArrowHelper
         const mouse = new THREE.Vector2();
         const canvasRect = this.$refs.canvasContainer.getBoundingClientRect();
         mouse.x = ((event.clientX - canvasRect.left) / canvasRect.width) * 2 - 1;
@@ -110,10 +140,30 @@ export default {
         const intersects = raycaster.intersectObject(this.plane);
 
         if (intersects.length > 0) {
-          const direction = new THREE.Vector3().subVectors(intersects[0].point, this.arrowHelper.position);
-          this.arrowHelper.setDirection(direction.normalize());
+          this.arrowDirection.subVectors(intersects[0].point, this.arrowOrigin).normalize();
+          this.arrowHelper.setDirection(this.arrowDirection);
           this.renderer.render(toRaw(this.scene), this.camera);
         }
+      }
+    },
+    onClickC(event) {
+      if (this.isCreatingArrow) {
+        // 打印箭头方向
+        console.log('Arrow Direction Vector:', this.arrowDirection);
+
+        // 结束监听鼠标点击事件C
+        window.removeEventListener('click', this.clickEventListenerC);
+        this.clickEventListenerC = null;
+
+        // 结束监听鼠标移动事件B
+        window.removeEventListener('mousemove', this.mouseMoveEventListener);
+        this.mouseMoveEventListener = null;
+
+        // 结束创建箭头
+        this.isCreatingArrow = false;
+
+        // 清除箭头
+        this.removeArrow();
       }
     },
     removeArrow() {
@@ -135,5 +185,9 @@ export default {
 </script>
 
 <style>
-
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 </style>
