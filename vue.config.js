@@ -8,6 +8,9 @@ module.exports = defineConfig({
     plugins: [
       new NodePolyfillPlugin()
     ]
+  },
+  devServer: {
+    port: 6916
   }
 })
 

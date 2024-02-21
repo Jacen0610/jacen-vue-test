@@ -1,6 +1,6 @@
 <template>
   <div class="real-center-container">
-    <div class="large-text" >This is Home Page</div>
+    <div class="large-text" >Jacen Holdings</div>
     <h1 style="color: #42b983">Welcome to Jacen's Vue test Project</h1>
     <h2 style="color: cadetblue">Most power by Three.js</h2>
     <div>

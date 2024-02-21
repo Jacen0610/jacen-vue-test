@@ -1,7 +1,11 @@
 
 <template>
   <h1 style="color: #42b983; text-align: center">Welcome to MQTT Test Page</h1>
-  <el-input v-model="inputTopic1" placeholder="Please input topic" />
+  <el-row>
+    <el-col :span="12">
+      <el-input v-model="inputTopic1" placeholder="Please input topic" />
+    </el-col>
+  </el-row>
   <el-row>
     <el-col :span="4">
       <el-button @click="topic1Confirm" type="primary" style="float: left;margin: 20px ">确定Topic</el-button>
@@ -25,7 +29,8 @@ import RandomString from 'random-string'
         MQTTFlag: 0,
         inputTopic1: '',
         topic1: '',
-        topic1Alert: ''
+        topic1Alert: '',
+        topicCounter: 0
 
       }
     },
@@ -55,6 +60,7 @@ import RandomString from 'random-string'
         })
         this.ClientMQTT.on('message', (topic, message) => {
           console.log('收到消息：', topic, message.toString())
+          this.topicCounter += 1;
         })
       },
       topic1Confirm() {

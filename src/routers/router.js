@@ -9,7 +9,10 @@ const routes = [
     {
         path: '/',
         name: 'Home',
-        component: Home
+        component: Home,
+        meta: {
+            title: 'Jacen Holdings Vue Project Homepage'
+        }
     },
     {
         path: '/myScene',
