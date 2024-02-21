@@ -10,6 +10,9 @@
       <router-link class="btn-container" to="/partScene">
         <el-button size="large" type="success" round>Go to TestScene</el-button>
       </router-link>
+      <router-link class="btn-container" to="/mqttTest">
+        <el-button size="large" type="primary" round>Go to MqttTest</el-button>
+      </router-link>
     </div>
 
   </div>

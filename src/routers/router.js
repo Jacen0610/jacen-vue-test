@@ -2,6 +2,7 @@ import {createRouter,createWebHashHistory} from 'vue-router'
 import Home from '../views/Home.vue'
 import MyScene from '../views/MyScene.vue'
 import PartScene from "../views/PartScene.vue";
+import MqttTest from "@/views/MqttTest.vue";
 
 
 const routes = [
@@ -19,6 +20,11 @@ const routes = [
         path: '/partScene',
         name: 'MyScene2',
         component: PartScene
+    },
+    {
+        path: '/mqttTest',
+        name: 'MqttTest',
+        component: MqttTest
     }
 ]
 
