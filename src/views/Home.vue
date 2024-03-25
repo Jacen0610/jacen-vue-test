@@ -1,25 +1,45 @@
 <template>
-  <div class="real-center-container">
-    <div class="large-text" >This is Home Page</div>
-    <h1 style="color: #42b983">Welcome, Jacen</h1>
-    <div>
-      <router-link class="btn-container" to="/myScene">
-        <button class="rounded-btn">Go to MyScene</button>
-      </router-link>
-      <router-link class="btn-container" to="/partScene">
-        <button class="rounded-btn">Go to PartScene</button>
-      </router-link>
-      <router-link class="btn-container" to="/mouseScene">
-        <button class="rounded-btn">Go to MouseScene</button>
-      </router-link>
-    </div>
+  <Menu/>
 
-  </div>
+    <a-carousel
+        autoPlay="interval: 2000"
+        animation-name="card"
+        show-arrow="never"
+        indicator-position="outer"
+        :style="{
+      width: '100%',
+      height: '500px',
+    }"
+    >
+      <a-carousel-item v-for="image in images" :style="{ width: '60%' }">
+        <img
+            :src="image"
+            :style="{
+          width: '100%',
+          height: '100%'
+        }"
+        />
+      </a-carousel-item>
+    </a-carousel>
+
 </template>
 
 <script>
+import Menu from "@/components/Menu.vue";
+
 export default {
-  name: 'Home'
+  name: 'Home',
+  components: {Menu},
+  setup() {
+    const images = [
+      'https://img2.imgtp.com/2024/03/22/1HvbBrQ4.jpg',
+      'https://img2.imgtp.com/2024/03/22/4FtgKJ6N.jpg',
+      'https://img2.imgtp.com/2024/03/22/OCuVGGPd.jpg',
+    ];
+    return {
+      images
+    }
+  },
 }
 </script>
 

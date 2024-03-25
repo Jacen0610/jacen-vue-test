@@ -1,8 +1,7 @@
 import {createRouter,createWebHashHistory} from 'vue-router'
 import Home from '../views/Home.vue'
-import MyScene from '../views/MyScene.vue'
-import PartScene from "../views/PartScene.vue";
-import MouseScene from "@/views/MouseScene.vue";
+import CarGroup from "@/views/CarGroup.vue";
+import CarView from "@/views/CarView.vue";
 
 
 const routes = [
@@ -12,20 +11,15 @@ const routes = [
         component: Home
     },
     {
-        path: '/myScene',
-        name: 'MyScene',
-        component: MyScene
+        path: '/cargroup',
+        name: 'CarGroup',
+        component: CarGroup
     },
     {
-        path: '/partScene',
-        name: 'MyScene2',
-        component: PartScene
+        path: '/carview',
+        name: 'CarView',
+        component: CarView
     },
-    {
-        path: '/mouseScene',
-        name: 'MouseScene',
-        component: MouseScene
-    }
 ]
 
 const router = createRouter({
